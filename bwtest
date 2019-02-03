@@ -1,0 +1,87 @@
+#!/bin/bash
+
+
+stpkgpath="/home/chema/.local/lib/python2.7/site-packages"
+log="/home/chema/bwtest/bwtest.log"
+title="Testing bandwidth, writing log:"
+right_now=$(date)
+time_stamp="Testing your bandwidth on $right_now by $USER"
+
+# Mine (this color codes does not work properly when using printf)
+
+#no_format="\033[0m"
+#f_bold="\033[1m"
+#c_red="\033[38;5;9m"
+#c_dodgerblue3="\033[38;5;26m"
+
+#testing_network() 
+#{
+#for (( i = 0; i < $1; ++i  ))
+#do
+#    echo ""
+#    echo -e "${f_bold}${c_red}$time_stamp${no_format}"
+#    echo ""
+#    python $stpkgpath/speedtest.py
+#    echo ""
+#    echo ""
+#done
+#}
+
+
+# geirha IRC suggestion
+
+
+no_format=$'\e[0m'
+f_bold=$'\e[1m'
+c_red=$'\e[38;5;9m'
+c_dodgerblue3=$'\e[38;5;26m'
+
+testing_network() { 
+    local i; for (( i = 0; i < 10#$1; ++i )); do 
+        printf '\n%s%s%s\n\n' "$f_bold$c_red" "$time_stamp" "$no_format"; 
+        python "$stpkgpath/speedtest.py"; 
+        printf '\n\n'; 
+    done;
+}
+
+write_title()
+{
+    echo -e "${f_bold}${c_dodgerblue3}##########################"
+    echo -e "${f_bold}${c_dodgerblue3}$title"
+    echo -e "${f_bold}${c_dodgerblue3}##########################"
+    echo ""
+}
+
+
+while getopts :t:vh opt
+do
+    case $opt in
+        v ) echo "v1.0" ;;
+        h ) echo "Showing help" ;;
+        t ) echo "Captured -t option"
+            times=$OPTARG
+            if [[ $times != *[!0-9]* ]]
+            then
+                if [ ! -e $log ]
+                then
+                    touch $log
+                    write_title > $log
+                    testing_network "$times" >> $log
+                else
+                    testing_network "$times" >> $log
+                fi 
+            else 
+                echo "$times is not a valid integer"
+            fi ;;
+        \? ) echo "Invalid option -$OPTARG"
+            exit 1 ;;
+        : ) echo "Option -$OPTARG requires an argument"
+            exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ -n "$1" ]
+then
+    echo "Showing help"
+fi
