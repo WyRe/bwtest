@@ -46,10 +46,9 @@ testing_network() {
 
 write_title()
 {
-    echo -e "${f_bold}${c_dodgerblue3}##########################"
-    echo -e "${f_bold}${c_dodgerblue3}$title"
-    echo -e "${f_bold}${c_dodgerblue3}##########################"
-    echo ""
+    printf '%s##########################' "$f_bold$c_dodgerblue3";
+    printf '%s%s' "$f_bold$c_dodgerblue3" "$title";
+    printf '\n%s##########################%s\n' "$f_bold$c_dodgerblue3" "$no_format";
 }
 
 
@@ -81,6 +80,8 @@ do
 done
 shift $((OPTIND-1))
 
+
+# It shows help when a non valid character is introduced by user as argument
 if [ -n "$1" ]
 then
     echo "Showing help"
