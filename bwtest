@@ -55,8 +55,6 @@ write_title()
 while getopts :t:vh opt
 do
     case $opt in
-        v ) echo "v1.0" ;;
-        h ) echo "Showing help" ;;
         t ) echo "Captured -t option"
             times=$OPTARG
             if [[ $times != *[!0-9]* ]]
@@ -72,6 +70,8 @@ do
             else 
                 echo "$times is not a valid integer"
             fi ;;
+        v ) echo "v1.0" ;;
+        h ) echo "Showing help" ;;
         \? ) echo "Invalid option -$OPTARG"
             exit 1 ;;
         : ) echo "Option -$OPTARG requires an argument"
