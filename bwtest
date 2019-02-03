@@ -46,7 +46,7 @@ testing_network() {
 
 write_title()
 {
-    printf '%s##########################' "$f_bold$c_dodgerblue3";
+    printf '%s##########################\n' "$f_bold$c_dodgerblue3";
     printf '%s%s' "$f_bold$c_dodgerblue3" "$title";
     printf '\n%s##########################%s\n' "$f_bold$c_dodgerblue3" "$no_format";
 }
